@@ -1,0 +1,29 @@
+# 密钥与环境变量
+.env
+.env.*
+*.key
+
+# Python 缓存
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+
+# 实验过程中生成的临时工作目录
+workspace/
+wrong_workspace/
+
+# 编辑器与系统文件
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# 日志
+*.log
+
+# 个人简历等含隐私信息的文件，不公开
+简历_*.docx
+简历_*.pdf
+*项目申请*.pdf
+generate_resume.py

@@ -1,0 +1,14 @@
+{
+    "id": "task3",
+    "title": "读取压缩文件内容",
+    "prompt": "data/archive.zip 是一个压缩文件，里面有 config.txt。请解压并告诉我 config.txt 的内容。",
+    "setup": {
+        "files": {
+            "data/archive.zip": "zip:config.txt=Hello from archive"
+        }
+    },
+    "check": {
+        "type": "contains",
+        "answer": "Hello from archive"
+    }
+}

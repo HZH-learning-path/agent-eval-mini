@@ -1,0 +1,13 @@
+{
+    "id": "task2",
+    "title": "把文本写入指定文件",
+    "prompt": "请把字符串 'Hello Agent Eval' 写入 output/result.txt 文件。",
+    "setup": {
+        "files": {}
+    },
+    "check": {
+        "type": "file_exists",
+        "path": "output/result.txt",
+        "answer": "Hello Agent Eval"
+    }
+}

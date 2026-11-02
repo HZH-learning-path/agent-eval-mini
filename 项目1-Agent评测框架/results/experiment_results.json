@@ -1,0 +1,204 @@
+{
+  "A_normal": [
+    {
+      "task_id": "task1",
+      "task_title": "读取JSON文件并提取字段",
+      "experiment": "A_normal",
+      "max_tokens": 2048,
+      "work_dir": "./workspace",
+      "model_output": "Alice",
+      "tool_calls": [
+        {
+          "tool": "read_file",
+          "args": {
+            "path": "data/user.json"
+          },
+          "result": "{\"name\": \"Alice\", \"age\": 25, \"city\": \"Beijing\"}"
+        }
+      ],
+      "passed": true,
+      "detail": "期望包含 'Alice'，实际输出: Alice"
+    },
+    {
+      "task_id": "task2",
+      "task_title": "把文本写入指定文件",
+      "experiment": "A_normal",
+      "max_tokens": 2048,
+      "work_dir": "./workspace",
+      "model_output": "已完成。字符串 `Hello Agent Eval` 已成功写入 `output/result.txt`。",
+      "tool_calls": [
+        {
+          "tool": "write_file",
+          "args": {
+            "path": "output/result.txt",
+            "content": "Hello Agent Eval"
+          },
+          "result": "文件写入成功: ./workspace\\output/result.txt"
+        }
+      ],
+      "passed": true,
+      "detail": "文件内容: 'Hello Agent Eval'，期望: 'Hello Agent Eval'"
+    },
+    {
+      "task_id": "task3",
+      "task_title": "读取压缩文件内容",
+      "experiment": "A_normal",
+      "max_tokens": 2048,
+      "work_dir": "./workspace",
+      "model_output": "已成功从 `data/archive.zip` 中解压出 `config.txt`，其内容为：\n\n```\nHello from archive\n```\n\n如果您需要把这个文件保存到某个位置，或者查看压缩包里的其他文件，请告诉我。",
+      "tool_calls": [
+        {
+          "tool": "extract_zip",
+          "args": {
+            "zip_path": "data/archive.zip",
+            "file_name": "config.txt"
+          },
+          "result": "Hello from archive"
+        }
+      ],
+      "passed": true,
+      "detail": "期望包含 'Hello from archive'，实际输出: 已成功从 `data/archive.zip` 中解压出 `config.txt`，其内容为：\n\n```\nHello from archive\n```\n\n如果您需要把这个文件保存到某个位置，或者查看压缩包里的其他文件，请告诉我。"
+    },
+    {
+      "task_id": "task4",
+      "task_title": "解析JSON数据",
+      "experiment": "A_normal",
+      "max_tokens": 2048,
+      "work_dir": "./workspace",
+      "model_output": "第二个用户的名字是 **Carol**。\n\n（数据中 `users[1]` 即 `{\"id\": 2, \"name\": \"Carol\"}`。）",
+      "tool_calls": [],
+      "passed": true,
+      "detail": "期望包含 'Carol'，实际输出: 第二个用户的名字是 **Carol**。\n\n（数据中 `users[1]` 即 `{\"id\": 2, \"name\": \"Carol\"}`。）"
+    }
+  ],
+  "B_token_limit": [
+    {
+      "task_id": "task1",
+      "task_title": "读取JSON文件并提取字段",
+      "experiment": "B_token_limit",
+      "max_tokens": 40,
+      "work_dir": "./workspace",
+      "model_output": "[API调用失败] Expecting value: line 1 column 1 (char 0)",
+      "tool_calls": [],
+      "passed": false,
+      "detail": "期望包含 'Alice'，实际输出: [API调用失败] Expecting value: line 1 column 1 (char 0)"
+    },
+    {
+      "task_id": "task2",
+      "task_title": "把文本写入指定文件",
+      "experiment": "B_token_limit",
+      "max_tokens": 40,
+      "work_dir": "./workspace",
+      "model_output": "",
+      "tool_calls": [],
+      "passed": false,
+      "detail": "文件不存在: output/result.txt"
+    },
+    {
+      "task_id": "task3",
+      "task_title": "读取压缩文件内容",
+      "experiment": "B_token_limit",
+      "max_tokens": 40,
+      "work_dir": "./workspace",
+      "model_output": "[API调用失败] Unterminated string starting at: line 1 column 14 (char 13)",
+      "tool_calls": [],
+      "passed": false,
+      "detail": "期望包含 'Hello from archive'，实际输出: [API调用失败] Unterminated string starting at: line 1 column 14 (char 13)"
+    },
+    {
+      "task_id": "task4",
+      "task_title": "解析JSON数据",
+      "experiment": "B_token_limit",
+      "max_tokens": 40,
+      "work_dir": "./workspace",
+      "model_output": "第二个用户的名字是 **Carol**。\n\n（数据中的 `users` 数组",
+      "tool_calls": [],
+      "passed": true,
+      "detail": "期望包含 'Carol'，实际输出: 第二个用户的名字是 **Carol**。\n\n（数据中的 `users` 数组"
+    }
+  ],
+  "C_wrong_path": [
+    {
+      "task_id": "task1",
+      "task_title": "读取JSON文件并提取字段",
+      "experiment": "C_wrong_path",
+      "max_tokens": 2048,
+      "work_dir": "./wrong_workspace",
+      "model_output": "无法回答——`data/user.json` 不存在，读取失败（工作目录为 `./wrong_workspace`，该路径下没有 `data/user.json`，也没有 `user.json`）。\n\n我不会凭空编造 name 的值。请确认文件的实际路径或先创建该文件。",
+      "tool_calls": [
+        {
+          "tool": "read_file",
+          "args": {
+            "path": "data/user.json"
+          },
+          "result": "错误：文件不存在 - ./wrong_workspace\\data/user.json"
+        },
+        {
+          "tool": "read_file",
+          "args": {
+            "path": "./data/user.json"
+          },
+          "result": "错误：文件不存在 - ./wrong_workspace\\./data/user.json"
+        },
+        {
+          "tool": "read_file",
+          "args": {
+            "path": "user.json"
+          },
+          "result": "错误：文件不存在 - ./wrong_workspace\\user.json"
+        }
+      ],
+      "passed": false,
+      "detail": "期望包含 'Alice'，实际输出: 无法回答——`data/user.json` 不存在，读取失败（工作目录为 `./wrong_workspace`，该路径下没有 `data/user.json`，也没有 `user.json`）。\n\n我不会凭空编造 name 的值。请确认文件的实际路径或先创建该文件。"
+    },
+    {
+      "task_id": "task2",
+      "task_title": "把文本写入指定文件",
+      "experiment": "C_wrong_path",
+      "max_tokens": 2048,
+      "work_dir": "./wrong_workspace",
+      "model_output": "已完成。\n\n- 写入内容：`Hello Agent Eval`\n- 读取 `output/result.txt` 校验，内容确认为 `Hello Agent Eval`\n\n有一点需要提醒：写入工具返回的实际落盘路径是 `./wrong_workspace/output/result.txt`，而不是我请求的 `output/result.txt`。也就是说当前工作目录被解析到了 `wrong_workspace` 下。我随后按 `output/result.txt` 读取仍能取到正确内容（说明读取也是相对同一个工作目录解析的），所以文件本身是一致的，但如果你期望它出现在别的位置，可能需要确认一下工作目录设置。",
+      "tool_calls": [
+        {
+          "tool": "write_file",
+          "args": {
+            "path": "output/result.txt",
+            "content": "Hello Agent Eval"
+          },
+          "result": "文件写入成功: ./wrong_workspace\\output/result.txt"
+        },
+        {
+          "tool": "read_file",
+          "args": {
+            "path": "output/result.txt"
+          },
+          "result": "Hello Agent Eval"
+        }
+      ],
+      "passed": true,
+      "detail": "文件内容: 'Hello Agent Eval'，期望: 'Hello Agent Eval'"
+    },
+    {
+      "task_id": "task3",
+      "task_title": "读取压缩文件内容",
+      "experiment": "C_wrong_path",
+      "max_tokens": 2048,
+      "work_dir": "./wrong_workspace",
+      "model_output": "[API调用失败] [Errno 13] Permission denied: './wrong_workspace\\\\.'",
+      "tool_calls": [],
+      "passed": false,
+      "detail": "期望包含 'Hello from archive'，实际输出: [API调用失败] [Errno 13] Permission denied: './wrong_workspace\\\\.'"
+    },
+    {
+      "task_id": "task4",
+      "task_title": "解析JSON数据",
+      "experiment": "C_wrong_path",
+      "max_tokens": 2048,
+      "work_dir": "./wrong_workspace",
+      "model_output": "第二个用户的名字是 **Carol**（id 为 2）。\n\n这个信息直接来自你给出的 JSON 数据：`users` 数组的第二个元素是 `{\"id\": 2, \"name\": \"Carol\"}`。\n\n由于数据是内联在问题里的，不涉及文件读取，所以无需调用读写工具。如果你之后想把这段 JSON 保存成文件（比如 `users.json`）并再从中读取，我也可以帮你完成。",
+      "tool_calls": [],
+      "passed": true,
+      "detail": "期望包含 'Carol'，实际输出: 第二个用户的名字是 **Carol**（id 为 2）。\n\n这个信息直接来自你给出的 JSON 数据：`users` 数组的第二个元素是 `{\"id\": 2, \"name\": \"Carol\"}`。\n\n由于数据是内联在问题里的，不涉及文件读取，所以无需调用读写工具。如果你之后想把这段 JSON 保存成文件（比如 `users.json`）并再从中读取，我也可以帮你完成。"
+    }
+  ]
+}

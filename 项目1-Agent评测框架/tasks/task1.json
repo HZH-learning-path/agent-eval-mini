@@ -1,0 +1,14 @@
+{
+    "id": "task1",
+    "title": "读取JSON文件并提取字段",
+    "prompt": "请读取 data/user.json 文件，告诉我其中 name 字段的值。只需要回答值本身，不要加其他内容。",
+    "setup": {
+        "files": {
+            "data/user.json": "{\"name\": \"Alice\", \"age\": 25, \"city\": \"Beijing\"}"
+        }
+    },
+    "check": {
+        "type": "contains",
+        "answer": "Alice"
+    }
+}

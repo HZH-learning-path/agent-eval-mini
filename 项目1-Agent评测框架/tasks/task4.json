@@ -1,0 +1,12 @@
+{
+    "id": "task4",
+    "title": "解析JSON数据",
+    "prompt": "假设有一个API返回了如下JSON数据：{\"users\": [{\"id\": 1, \"name\": \"Bob\"}, {\"id\": 2, \"name\": \"Carol\"}]}。请告诉我第二个用户的名字。",
+    "setup": {
+        "files": {}
+    },
+    "check": {
+        "type": "contains",
+        "answer": "Carol"
+    }
+}
