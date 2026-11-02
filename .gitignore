@@ -27,3 +27,7 @@ Thumbs.db
 简历_*.pdf
 *项目申请*.pdf
 generate_resume.py
+
+# 本仓库只保留项目1，其余项目不提交
+项目2-API稳定性统计/
+项目3-豆瓣电影爬虫/
